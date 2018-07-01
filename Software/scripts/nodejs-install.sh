@@ -2,8 +2,8 @@
 
 NODEJS_DLPATH="https://nodejs.org/dist/latest-v8.x/"
 NODEJS_TAR_EXT=".tar.xz"
-# TODO check cpu for arm type for pattern
-NODEJS_DLPATTERN="node-[^>]*-linux-armv6l$NODEJS_TAR_EXT"
+ARCH=$(uname -m)
+NODEJS_DLPATTERN="node-[^>]*-linux-$ARCH$NODEJS_TAR_EXT"
 NODEJS_INSTALL_PATH="/opt/nodejs"
 
 

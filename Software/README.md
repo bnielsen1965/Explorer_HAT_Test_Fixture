@@ -17,4 +17,7 @@ and run the test fixture.
 
 ## Configure Raspbian
 
+## Install git
+
 ## Install Test Fixture Software
+
