@@ -44,11 +44,15 @@ installpibuttons() {
 		errormessage "Failed to checkout branch $PIBUTTONS_VERSION."
 		exit 1
 	fi
+	infomessage "Make and install pi-buttons."
 	make
 	sudo make install
 	sudo make install_service
 
-# TODO configure pi-buttons for application then restart service
+	infomessage "Configure pi-buttons."
+	sudo cp pi-buttons.conf /etc/
+	sudo systemctl enable pi-buttons
+	sudo systemctl restart pi-buttons
 
 	infomessage "Clean up."
 	rm -rf "$PIBUTTONS_TMP_DIR"
