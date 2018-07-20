@@ -18,18 +18,38 @@ dependencies.
 
 ## Raspbian Image
 
-Download the Raspbian Lite zip file (tested with the latest stretch release)
+```
+If the intial steps in this procedure are not clear
+then refer to the detailed instructions for the
+installation of the Raspbian OS on an SD card at the
+Raspberry Pi Project website...
+
+https://www.raspberrypi.org/documentation/installation/installing-images/README.md
+```
+
+#### 1) Download the Raspbian Lite zip file (tested with the latest stretch release)
 
 https://www.raspberrypi.org/downloads/raspbian/
 
-Unzip the image file and use image writing software to flash the image to the SD card.
+#### 2) Unzip the image file and use image writing software to flash the image to the SD card.
 
-After writing the image eject the SD card then reinsert the card and wait for the /boot partition to mount.
+#### 3) Add boot files to the boot partition on the SD card.
 
-Add an empty file on the SD card /boot partition named ssh. The empty file named ssh tells the raspbian OS
-to enable and start the ssh service when the device first boots.
+a) After writing the image eject the SD card from your laptop / workstation then
+reinsert the card into your laptop / workstation and wait for the /boot partition to mount.
 
-Add a file named wpa_supplicant.conf to the /boot partition and enter the following information.
+```
+The SD card will have two partitions, Windows cannot read the second partition.
+Press cancel if Windows asks to format the second partition.
+```
+
+b) Add an empty file on the SD card /boot partition named ssh. The empty file named
+ssh tells the raspbian OS to enable and start the ssh service when the device
+first boots. After the first boot the ssh file will be automatically removed from
+the /boot partition.
+
+c) Add a file named wpa_supplicant.conf to the /boot partition and enter the
+following information in the file. (Use your WiFi router SSID and pass phrase.)
 
 ```shell
 country=US
@@ -41,38 +61,44 @@ network={
 }
 ```
 
-After creating the files in the /boot partition eject the SD card and insert in the raspberry pi.
+#### 4) Boot the Raspberry Pi with the SD card.
 
-Apply power to the raspberry pi to begin the boot process with  the new SD card.
+After creating the files in the /boot partition eject the SD card from your
+laptop / workstation and insert into the Raspberry Pi.
+
+Apply power to the Raspberry Pi to begin the boot process with the new SD card.
 
 Monitor the WiFi router for the IP address given to the raspberry pi.
 
-User terminal software, I.E. putty, to establish an SSH connection to the raspberry pi. And login
-with the default pi user with the default raspberry password.
+Use terminal software, I.E. putty, to establish an SSH connection to the Raspberry Pi.
+And login with the default user "pi" and the default password "raspberry".
+
+> NOTE: If you have the proper adapters you can use a USB keyboard and HDMI monitor in place of the terminal software.
 
 
-## Configure Raspbian
+## Configure Raspbian Localisation
 
-After establishing an SSH connection the localisation settings need to be adjusted using the
-raspi-config application...
+After establishing a terminal connection the Localisation settings need to be
+adjusted using the raspi-config application...
 
 > sudo raspi-config
 
 ### Locale
 
-Select Localisation Options then select Change Locale. On the Locale menu deselect en_GB.UTF-8 UTF-8
-and select the en_US.UTF-8 UTF-8 option.
+Select Localisation Options then select Change Locale. On the Locale menu
+deselect en_GB.UTF-8 UTF-8 and select the en_US.UTF-8 UTF-8 option.
 
 
 ### Timezone
 
-Again select Localisation Options then select Change Timezone. Select the appropriate geographic area
-time zone.
+Again select Localisation Options then select Change Timezone. Select the
+appropriate geographic area time zone.
 
 
-### Upgrades
+## OS Package Upgrades
 
-After finishing the localisation settings update and upgrade the OS packages and reboot
+After finishing the Localisation settings update and upgrade the OS packages
+and reboot
 
 > sudo apt-get update
 
