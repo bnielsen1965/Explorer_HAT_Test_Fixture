@@ -11,6 +11,7 @@ PIBUTTONS_VERSION="v1.0.1"
 # clone pi-buttons, build and install
 installpibuttons() {
 	infomessage "Clone pi-buttons"
+	CURRENT_PATH=$(pwd)
 	PIBUTTONS_TMP_DIR=$(mktemp -d)
 	cd "$PIBUTTONS_TMP_DIR"
 	git clone "$PIBUTTONS_REPO"
@@ -32,6 +33,7 @@ installpibuttons() {
 	sudo make install_service
 
 	infomessage "Configure pi-buttons."
+	cd "$CURRENT_PATH"
 	sudo cp pi-buttons.conf /etc/
 	sudo systemctl enable pi-buttons
 	sudo systemctl restart pi-buttons
