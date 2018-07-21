@@ -107,6 +107,17 @@ and reboot
 > sudo reboot
 
 
-## Install git
+## Run setup.sh
 
-## Install Test Fixture Software
+The setup.sh script will install and configure the software to support the
+Explorer HAT Test Fixture. Use the terminal to download and execute the script file.
+
+### Download and prepare setup.sh
+
+> curl -LOk https://github.com/bnielsen1965/Explorer_HAT_Test_Fixture/raw/master/Software/scripts/setup.sh
+> chmod a+x setup.sh
+
+
+### Execute setup.sh
+
+> ./setup.sh

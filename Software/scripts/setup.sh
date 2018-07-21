@@ -57,8 +57,11 @@ cloneRepo() {
 
 
 runSetupScripts() {
+	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh")
 	cd "$REPO_DIR$REPO_SCRIPTS_PATH"
-	# use array and run $v-install.sh  [ 'nodejs', 'overlay', 'pi-buttons']
+	for script in "${scripts[@]}"; do
+		. "./$script"
+	done
 }
 
 

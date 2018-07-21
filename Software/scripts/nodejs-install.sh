@@ -1,32 +1,14 @@
 #!/bin/bash
 
+. ./functions.sh
+
+
 NODEJS_DLPATH="https://nodejs.org/dist/latest-v8.x/"
 NODEJS_TAR_EXT=".tar.xz"
 ARCH=$(uname -m)
 NODEJS_DLPATTERN="node-[^>]*-linux-$ARCH$NODEJS_TAR_EXT"
 NODEJS_INSTALL_PATH="/opt/nodejs"
 
-
-# display a green message
-infomessage() {
-	echo -e "\e[92m$1\e[0m"
-}
-
-
-# display a red message
-errormessage() {
-	echo -e "\e[91m$1\e[0m"
-}
-
-
-# check if a command is installed
-installed() {
-	# check if command exists and is executable
-	if [ -x "$(command -v $1)" ]; then
-		return 0
-	fi
-	return 1
-}
 
 
 # get nodejs tarball and install
@@ -64,10 +46,9 @@ installnodejs() {
 }
 
 
-if installed node && installed npm; then
+if commandInstalled node && commandInstalled npm; then
 	infomessage "node and npm commands already installed."
 else
 	infomessage "Install node and npm."
 	installnodejs
 fi
-
