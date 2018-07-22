@@ -121,3 +121,11 @@ Explorer HAT Test Fixture. Use the terminal to download and execute the script f
 ### Execute setup.sh
 
 > ./setup.sh
+
+### Reboot
+
+After the setup process has successfully completed the Raspberry Pi needs a reboot
+before all the new settings and services will function properly, I.E. the new boot
+overlay that configures the GPIO pins is not applied until a reboot.
+
+> sudo reboot
