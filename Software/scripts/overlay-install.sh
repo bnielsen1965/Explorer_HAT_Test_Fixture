@@ -36,6 +36,7 @@ spibootsettings() {
 	infomessage "Setting spi boot settings."
 	echo "" | sudo tee -a "$BOOT_CONFIG" > /dev/null
 	echo "dtparam=$BOOT_SPI_SETTINGS" | sudo tee -a "$BOOT_CONFIG" > /dev/null
+	echo "i2c-dev" | sudo tee -a "/etc/modules-load.d/i2c.conf" > /dev/null
 }
 
 if bootvariableset "dtoverlay" "exhattf"; then
