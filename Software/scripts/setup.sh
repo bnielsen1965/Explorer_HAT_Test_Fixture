@@ -58,8 +58,8 @@ cloneRepo() {
 
 runSetupScripts() {
 	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh")
-	cd "$REPO_DIR$REPO_SCRIPTS_PATH"
 	for script in "${scripts[@]}"; do
+	  cd "$REPO_DIR$REPO_SCRIPTS_PATH"
 		. "./$script"
 	done
 }
@@ -76,6 +76,7 @@ fi
 # clone the project repo
 if cloneRepo; then
 	runSetupScripts
+	infomessage "Setup complete. Reboot now to apply all changes."
 	exit 0
 else
 	errormessage "Setup failed!"
