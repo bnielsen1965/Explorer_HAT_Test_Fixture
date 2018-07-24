@@ -12,9 +12,27 @@
 
             exhattf_pins: exhattf_pins {
                 brcm,pins =     <4 17 27 19 23 24 21 12 13 16 18 20 25 26>;     /* gpio no. */
-                brcm,function = <0 0  0  1  1  0  0  1  1  1  1  0  1  1>; /* 0:in, 1:out */
-                brcm,pull =     <2 2  2  0  0  0  2  1  2  2  2  2  2  2>;     /* 2:up 1:down 0:none */
+                /*brcm,function = <1 0  0  1  1  0  0  1  1  1  1  0  1  1>;*/ /* 0:in, 1:out */
+                brcm,function = <1 0  0  1  1  0  0  1  1  1  1  0  1  1>; /* 0:in, 1:out */
+                brcm,pull =     <0 2  2  0  0  0  2  0  0  0  0  2  0  0>;     /* 2:up 1:down 0:none */
             };
         };
     };
 };
+
+/*
+gpio 4:  Output, Explorer HAT RF Reset
+gpio 17: Input, Pull Up, Explorer HAT Up Button
+gpio 27: Input, Pull Up, Explorer HAT Down Button
+gpio 19: Output, Explorer HAT Enable Battery Voltage Divider (measurement)
+gpio 23: Output, Explorer HAT RF Debug Clock
+gpio 24: Input, Default, Explorer HAT RF Debug Data
+gpio 21: Input, Pull Up, Explorer HAT Battery Charging Status
+gpio 12: Output, Test Fixture EEPROM Program Enable
+gpio 13: Output, Test Fixture Enable +3.5V
+gpio 16: Output, Test Fixture Enable Battery
+gpio 18: Output, Test Fixture Enable Power To Explorer HAT
+gpio 20: Input, Pull Up, Test Fixture Explorer HAT Present
+gpio 25: Output, Test Fixture Enable USB Power
+gpio 26: Output, Test Fixture Enable +3.2V
+*/
