@@ -8,5 +8,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "epoll": "^2.0.2",
+    "extend": "^3.0.2",
+    "i2c-bus": "^4.0.0",
+    "node-pi-buttons": "^1.0.1",
+    "oled-font-5x7": "^1.0.3",
+    "oled-i2c-bus": "^1.0.10",
+    "pngparse": "^2.0.1"
+  }
 }
