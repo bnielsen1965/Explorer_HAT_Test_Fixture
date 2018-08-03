@@ -1,0 +1,36 @@
+[
+  {
+    "label": "Test All",
+    "emit": "test_all"
+  },
+  {
+    "label": "System",
+    "menu": [
+      {
+        "label": "Test",
+        "emit": {
+          "name": "text",
+          "arguments": ["Text test."]
+        }
+      },
+      {
+        "label": "Date",
+        "command": "date"
+      }
+    ]
+  },
+  {
+    "label": "EEPROM",
+    "emit": {
+      "name": "eeprom",
+      "arguments": ["eeprom", "eeprom"]
+    }
+  },
+  {
+    "label": "Radio",
+    "emit": {
+      "name": "radio",
+      "arguments": ["radio", "radio"]
+    }
+  }
+]

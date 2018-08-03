@@ -27,6 +27,14 @@ const Display = {
     });
   },
 
+  write: (display, str) => {
+    display.write(str);
+  },
+
+  clear: (display) => {
+    display.clear();
+  },
+
   dimDisplay: display => {
     display.oled.dimDisplay(true);
   }

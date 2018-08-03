@@ -3,22 +3,37 @@ const FS = require('fs');
 const Path = require('path');
 const Epoll = require('epoll').Epoll;
 
+const GPIO_STATES = require('../config/gpio-states');
+const GPIO_PINS = require('../config/gpio-pins');
 const GPIO_PATH = '/sys/class/gpio';
 
-const GPIOs = {
-  // export the GPIOs defined in the given array
+const GPIOS = {
+  // export the GPIOS defined in the given array
   exportGPIOs: gpios => {
     return new Promise((resolve, reject) => {
-      let gpioNames = Object.keys(gpios);
+      GPIOS.exportGPIOArray(GPIO_PINS.outputs)
+      .then(() => {
+        return GPIOS.exportGPIOArray(GPIO_PINS.inputs);
+      })
+      .then(() => {
+        resolve();
+      })
+      .catch(err => { reject(err); });
+    });
+  },
+
+  exportGPIOArray: gpioArray => {
+    return new Promise((resolve, reject) => {
+      let gpioNames = Object.keys(gpioArray);
       let initGPIO = i => {
         if (i >= gpioNames.length) {
           resolve();
           return;
         }
 
-        GPIOs.exportGPIO(gpios[gpioNames[i]].gpio)
+        GPIOS.exportGPIO(gpioArray[gpioNames[i]].gpio)
         .then(() => {
-          return (gpios[gpioNames[i]].edge ? GPIOs.edgeGPIO(gpios[gpioNames[i]].gpio, gpios[gpioNames[i]].edge) : null);
+          return (gpioArray[gpioNames[i]].edge ? GPIOS.edgeGPIO(gpioArray[gpioNames[i]].gpio, gpioArray[gpioNames[i]].edge) : null);
         })
         .then(() => {
           initGPIO(i + 1);
@@ -46,7 +61,6 @@ const GPIOs = {
 
   edgeGPIO(gpio, value) {
     return new Promise((resolve, reject) => {
-      console.log('EDGE', gpio, value);
       FS.writeFile(Path.join(GPIO_PATH, 'gpio' + gpio, 'edge'), value, err => {
         if (err) {
           // TODO handle errors
@@ -58,6 +72,34 @@ const GPIOs = {
       });
     });
   },
+
+
+  setGPIOState: (state) => {
+    return new Promise((resolve, reject) => {
+      let gpioNames = Object.keys(GPIO_PINS.outputs);
+      let setGPIO = i => {
+        if (i >= gpioNames.length) {
+          resolve();
+          return;
+        }
+        let gpioName = gpioNames[i];
+        if (GPIO_STATES[state][gpioName]) {
+          // set value to on or off based on the defined map of on = 0 | 1
+          let value = GPIO_STATES[state][gpioName] === 'on' ? GPIO_PINS.outputs[gpioName].on : GPIO_PINS.outputs[gpioName].on^1&1;
+          GPIOS.setGPIOValue(GPIO_PINS.outputs[gpioName].gpio, value)
+          .then(() => {
+            setGPIO(i + 1);
+          })
+          .catch(err => { reject(err); });
+        }
+        else {
+          setGPIO(i + 1);
+        }
+      }
+      setGPIO(0);
+    });
+  },
+
 
 
   setGPIOValue: (gpio, value) => {
@@ -127,4 +169,4 @@ const GPIOs = {
 
 };
 
-module.exports = GPIOs;
+module.exports = GPIOS;

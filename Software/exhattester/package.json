@@ -13,6 +13,7 @@
     "epoll": "^2.0.2",
     "extend": "^3.0.2",
     "i2c-bus": "^4.0.0",
+    "menube": "^1.0.4",
     "node-pi-buttons": "^1.0.1",
     "oled-font-5x7": "^1.0.3",
     "oled-i2c-bus": "^1.0.10",

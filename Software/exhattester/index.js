@@ -11,7 +11,7 @@ const Path = require('path');
 const GPIOS = require('./lib/gpios');
 //const Display = require('./lib/display');
 
-let currentState;
+let currentState = {};
 
 const npb = require('node-pi-buttons');
 
@@ -26,26 +26,48 @@ myNPB
 })
 .on('clicked', function (gpio, data) {
   console.log('CLICKED', gpio, JSON.stringify(data, null, 2));
-  console.log(parseInt(gpio), GPIO_UP)
   switch (parseInt(gpio)) {
     case GPIO_UP:
-    previousState();
+    //previousState();
+    if (currentState.up_on_clicked) { currentState.up_on_clicked(); }
     break;
 
     case GPIO_DOWN:
-    nextState();
+    //nextState();
+    if (currentState.down_on_clicked) { currentState.down_on_clicked(); }
     break;
   }
 })
 .on('clicked_pressed', function (gpio, data) {
   console.log('CLICKED_PRESSED', gpio, JSON.stringify(data, null, 2));
-  loadState(Config.GPIOs, 'idle');
+  //loadState(Config.GPIOs, 'idle');
 })
 .on('double_clicked', function (gpio, data) {
   console.log('DOUBLE_CLICKED', gpio, JSON.stringify(data, null, 2));
+  switch (parseInt(gpio)) {
+    case GPIO_UP:
+    //previousState();
+    if (currentState.up_on_doubleclicked) { currentState.up_on_doubleclicked(); }
+    break;
+
+    case GPIO_DOWN:
+    //nextState();
+    if (currentState.down_on_doubleclicked) { currentState.down_on_doubleclicked(); }
+    break;
+  }
 });
 
 
+//watchHATPresent();
+loadState('power_on')
+.then(newState => {
+  //currentState = newState;
+})
+.catch(err => {
+  console.log(err.toString());
+});
+
+/*
 GPIOS.exportGPIOs(Config.GPIOs)
 .then(() => {
   return setGPIOState(Config.GPIOs, GPIO_STATES['power_on']);
@@ -70,7 +92,7 @@ GPIOS.exportGPIOs(Config.GPIOs)
   console.log('ERROR', err.toString(), err.stack);
   process.exit(1);
 });
-
+*/
 
 // make sure pi-buttons socket is closed before exit
 process.on('SIGINT', function() {
@@ -79,7 +101,7 @@ process.on('SIGINT', function() {
   process.exit();
 });
 
-
+/*
 function nextState() {
   let ni = StateSequence.indexOf(currentState) + 1;
   if (ni < StateSequence.length) {
@@ -94,9 +116,22 @@ function previousState() {
     loadState(Config.GPIOs, StateSequence[ni]);
   }
 }
+*/
 
-function loadState(gpios, state) {
-  console.log('LOAD STATE', state)
+function loadState(state) { //(gpios, state) {
+  return new Promise((resolve, reject) => {
+    console.log('LOAD STATE', state);
+    // TODO should this be handled as a promise???
+    require(Path.join(process.cwd(), 'states', state))(loadState)
+    .then(newState => {
+      currentState = newState;
+      resolve(newState);
+    })
+    .catch(err => {
+      console.log('Load state error.', state, err.toString());
+    });
+  });
+  /*
   setGPIOState(gpios, GPIO_STATES[state])
   .then(() => {
     currentState = state;
@@ -105,8 +140,9 @@ function loadState(gpios, state) {
   .catch(err => {
     console.log('State load error.', err.toString(), err.stack);
   });
+  */
 }
-
+/*
 // TODO should move to gpios module
 // TODO would be better if state was passed as a string and function extracts state settings
 function setGPIOState(gpios, state) {
@@ -135,10 +171,11 @@ function setGPIOState(gpios, state) {
     setGPIO(0);
   });
 }
-
+*/
 
 function watchHATPresent() {
   GPIOS.watchGPIO(Config.GPIOs.GPIO_HAT_PRESENT.gpio, value => {
+    console.log('HAT CHANGE', value);
     if (parseInt(value) === Config.GPIOs.GPIO_HAT_PRESENT.on) {
       loadState(Config.GPIOs, 'ready');
     }
