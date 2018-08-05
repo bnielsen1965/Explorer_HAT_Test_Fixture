@@ -11,10 +11,9 @@
             pinctrl-0 = <&exhattf_pins>;
 
             exhattf_pins: exhattf_pins {
-                brcm,pins =     <4 17 27 19 23 24 21 12 13 16 18 20 25 26>;     /* gpio no. */
-                /*brcm,function = <1 0  0  1  1  0  0  1  1  1  1  0  1  1>;*/ /* 0:in, 1:out */
-                brcm,function = <1 0  0  1  1  0  0  1  1  1  1  0  1  1>; /* 0:in, 1:out */
-                brcm,pull =     <0 2  2  0  0  0  2  0  0  0  0  2  0  0>;     /* 2:up 1:down 0:none */
+                brcm,pins =     <4  17 27 19 23 24 21 12 13 16 18 20 25 26>;    /* gpio no. */
+                brcm,function = <1  0  0  1  1  0  0  1  1  1  1  0  1  1>;     /* 0:in, 1:out */
+                brcm,pull =     <0  2  2  0  0  0  2  0  0  0  0  2  0  0>;     /* 2:up 1:down 0:none */
             };
         };
     };

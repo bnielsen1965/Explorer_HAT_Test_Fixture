@@ -5,10 +5,9 @@ const GPIO_STATES = require('../config/gpio-states');
 const GPIOS = require('../lib/gpios');
 
 const Path = require('path');
+const DisplayConfig = require('../config/display.json');
 const Display = require('../lib/display');
 const MenuBe = require('menube');
-
-const DisplayConfig = require('../config/display.json');
 const MenuConfig = require('../config/menu.json');
 
 
@@ -20,11 +19,6 @@ const State = (loadState) => {
       setTimeout(function () {
         try {
           display = Display.openDisplay(DisplayConfig);
-//          Display.drawPNGBitmap(display, Path.join(__dirname, '../images', 'cb1.png'));
-/*
-          Display.clear(display);
-          Display.write(display, "READY");
-          */
           menu = loadMenu();
           showMenu(menu);
         }
@@ -34,7 +28,6 @@ const State = (loadState) => {
         resolve({
 
           up_on_clicked: () => {
-console.log('UP')
             menu.menuUp();
           },
 
@@ -43,12 +36,10 @@ console.log('UP')
           },
 
           down_on_clicked: () => {
-console.log('DOWN')
             menu.menuDown();
           },
 
           down_on_doubleclicked: () => {
-            console.log('DBL CLICKED')
             menu.activateSelect();
           },
 
@@ -65,9 +56,8 @@ console.log('DOWN')
       showMenu(menu);
     })
     .on('test_all', () => {
-      console.log('TEST ALL')
-      // TODO may need to do some clean up to destroy this state
-      loadState('test1')
+      destroy();
+      loadState('test_display')
       .catch(err => {
         console.log(err.toString());
       });
@@ -84,9 +74,11 @@ console.log('DOWN')
     menu.getActiveMenu().forEach(function (m) {
       text += (m.selected ? '>' : ' ') + m.label + '\n';
     });
-
-  //  console.log(text);
     display.write(text);
+  }
+
+  function destroy() {
+    display.destroy();
   }
 };
 

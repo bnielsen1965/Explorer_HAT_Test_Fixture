@@ -36,6 +36,9 @@ const GPIOS = {
           return (gpioArray[gpioNames[i]].edge ? GPIOS.edgeGPIO(gpioArray[gpioNames[i]].gpio, gpioArray[gpioNames[i]].edge) : null);
         })
         .then(() => {
+          return gpioArray[gpioNames[i]].init ? GPIOS.setGPIOValue(gpioNames[i], GPIOS.getOnOffValue(gpioNames[i], gpioArray[gpioNames[i]].init)) : null;
+        })
+        .then(() => {
           initGPIO(i + 1);
         })
         .catch(err => { reject(err); });
@@ -44,10 +47,15 @@ const GPIOS = {
     });
   },
 
+
+  isExported: gpioPin => {
+    return FS.existsSync(Path.join(GPIO_PATH, 'gpio' + gpioPin));
+  },
+
+
   exportGPIO: gpioPin => {
     return new Promise((resolve, reject) => {
       FS.writeFile(Path.join(GPIO_PATH, 'export'), gpioPin, err => {
-        if (!require('fs').existsSync(Path.join(GPIO_PATH, 'gpio' + gpioPin))) { console.log('gpio', gpioPin, 'doesn\'t exist'); }
         if (err) {
           // TODO handle errors
           resolve();
@@ -85,7 +93,8 @@ const GPIOS = {
         let gpioName = gpioNames[i];
         if (GPIO_STATES[state][gpioName]) {
           // set value to on or off based on the defined map of on = 0 | 1
-          let value = GPIO_STATES[state][gpioName] === 'on' ? GPIO_PINS.outputs[gpioName].on : GPIO_PINS.outputs[gpioName].on^1&1;
+          let value = GPIOS.getOnOffValue(gpioName, GPIO_STATES[state][gpioName]);// === 'on' ? GPIO_PINS.outputs[gpioName].on : GPIO_PINS.outputs[gpioName].on^1&1;
+          console.log(gpioName, GPIO_STATES[state][gpioName]);
           GPIOS.setGPIOValue(GPIO_PINS.outputs[gpioName].gpio, value)
           .then(() => {
             setGPIO(i + 1);
@@ -101,8 +110,14 @@ const GPIOS = {
   },
 
 
+  getOnOffValue: (gpioName, onoff) => {
+    return onoff === 'on' ? GPIO_PINS.outputs[gpioName].on : GPIO_PINS.outputs[gpioName].on^1&1;
+  },
+
+
 
   setGPIOValue: (gpio, value) => {
+    console.log('GSET', gpio, value)
     return new Promise((resolve, reject) => {
       FS.writeFile(Path.join(GPIO_PATH, 'gpio' + gpio, 'value'), value, err => {
         if (err) {

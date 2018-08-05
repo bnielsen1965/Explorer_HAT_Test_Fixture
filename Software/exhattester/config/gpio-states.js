@@ -27,28 +27,20 @@ const GPIO_STATES = {
     'GPIO_32V': 'off'
   },
 
-  test1: {
+  test_charge: {
     'GPIO_HAT': 'on',
     'GPIO_PWR': 'on',
-    'GPIO_BATT': 'off',
+    'GPIO_BATT': 'on',
     'GPIO_PGM': 'off',
     'GPIO_35V': 'off',
     'GPIO_32V': 'off'
   },
 
-  test2: {
-    'GPIO_HAT': 'on',
-    'GPIO_PWR': 'on',
-    'GPIO_BATT': 'off',
-    'GPIO_PGM': 'off',
-    'GPIO_35V': 'off',
-    'GPIO_32V': 'off'
-  },
 
   test3: {
     'GPIO_HAT': 'on',
-    'GPIO_PWR': 'on',
-    'GPIO_BATT': 'off',
+    'GPIO_PWR': 'off',
+    'GPIO_BATT': 'on',
     'GPIO_PGM': 'off',
     'GPIO_35V': 'off',
     'GPIO_32V': 'off'

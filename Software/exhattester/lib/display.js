@@ -4,6 +4,8 @@ const I2C = require('i2c-bus');
 const PngParse = require('pngparse');
 
 const Display = {
+  i2cBus: null,
+
   /*
   config parameters...
   {
@@ -23,7 +25,8 @@ const Display = {
     PngParse.parseFile(imageFile, (err, image) => {
       if(err)
         throw err
-      display.oled.drawBitmap(image.data);
+      display.drawBitmap(image.data);
+//      display.oled.drawBitmap(image.data);
     });
   },
 
@@ -37,8 +40,11 @@ const Display = {
 
   dimDisplay: display => {
     display.oled.dimDisplay(true);
-  }
+  },
 
+  destroy: display => {
+    display.destroy();
+  }
 
 };
 

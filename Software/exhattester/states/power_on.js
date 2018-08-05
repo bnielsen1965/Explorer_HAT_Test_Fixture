@@ -14,7 +14,7 @@ const StateModule = (loadState) => {
       setTimeout(() => {
         // watch for HAT present
         GPIOS.watchGPIO(GPIO_PINS.inputs.GPIO_HAT_PRESENT.gpio, value => {
-          console.log('HAT CHANGE', value);
+          // HAT changed
           if (parseInt(value) === GPIO_PINS.inputs.GPIO_HAT_PRESENT.on) {
             loadState('ready')
             .catch(err => {
@@ -37,26 +37,7 @@ const StateModule = (loadState) => {
         .catch(err => { reject(err); });
       }, 1000);
     })
-
-/*
-    return {
-      up_on_clicked: () => {
-
-      },
-
-      up_on_doubleclicked: () => {
-
-      },
-
-      down_on_clicked: () => {
-
-      },
-
-      down_on_doubleclicked: () => {
-
-      },
-    }
-    */
+    .catch(err => { reject(err); });
   });
 };
 

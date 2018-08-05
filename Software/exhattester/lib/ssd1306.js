@@ -5,6 +5,7 @@
 
 const extend = require('extend');
 const oled = require('oled-i2c-bus');
+const oled_font = require('oled-font-5x7');
 //const i2c = require('i2c-bus');
 
 module.exports = function(config) {
@@ -12,7 +13,7 @@ module.exports = function(config) {
       config: null,
       error: '',
       default: {
-        font: require('oled-font-5x7'),
+        font: oled_font,
         address: 0x3C,
         height: 64,
         width: 128,
@@ -50,8 +51,11 @@ module.exports = function(config) {
       },
 
       write: function (str) {
-        Display.oled.writeString(Display.config.font, 1, str, 1, false, 4);// true, 4);
+        Display.oled.writeString(Display.config.font, 1, str, 1, false, 4);
+      },
 
+      drawBitmap: function (data) {
+        Display.oled.drawBitmap(data);
       },
 
       centerString: function (str) {
@@ -61,6 +65,20 @@ module.exports = function(config) {
         else {
           var s = Math.floor((str.length - Display.config.characters) / 2);
           return str.slice(s, s + Display.config.characters);
+        }
+      },
+
+      setCursor: function (x, y) {
+        Display.oled.setCursor(x, y);
+      },
+
+      destroy: function () {
+        if (Display.oled) {
+          delete Display.oled;
+        }
+
+        if (Display.i2cBus) {
+          Display.i2cBus.closeSync();
         }
       }
     };
