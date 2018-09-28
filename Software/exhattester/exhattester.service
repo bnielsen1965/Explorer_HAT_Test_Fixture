@@ -1,0 +1,17 @@
+[Unit]
+Description=Explorer HAT Tester.
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/home/pi/Explorer_HAT_Test_Fixture/Software/exhattester
+ExecStart=/home/pi/Explorer_HAT_Test_Fixture/Software/exhattester/start.sh
+Restart=always
+RestartSec=10
+SyslogIdentifier=exhattester
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
+

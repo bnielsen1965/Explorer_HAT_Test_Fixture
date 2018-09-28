@@ -76,26 +76,13 @@ const State = (loadState) => {
       });
     })
     .on('show_wifi', () => {
-      let child, stdout, match;
-      child = SpawnSync('ip', ['addr', 'show', 'wlan0']);
-      stdout = child.stdout.toString();
-      match = /inet\s+([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/mg.exec(stdout);
-      let ipAddress = match ? match[1] : '???';
+      showWiFi();
+    })
+    .on('eeprom_verify', () => {
 
-      child = SpawnSync('iwconfig', ['wlan0']);
-      stdout = child.stdout.toString();
-      match = /ESSID:"([^"]*)"/mg.exec(stdout);
-      let essid = match ? match[1] : '???';
-      match = /Bit Rate=([0-9]+\s[^\s]+)/mg.exec(stdout);
-      let bitRate = match ? match[1] : '???';
-      match = /Link Quality=([0-9]+)\/([0-9]+)\s/mg.exec(stdout);
-      let linkQuality = match ? Math.floor(parseInt(match[1]) / parseInt(match[2]) * 100) : '???';
-
-      display.clear();
-      display.write('IP: ' + ipAddress + '\n');
-      display.write('SSID: ' + essid + '\n');
-      display.write('BR: ' + bitRate + '\n');
-      display.write('LQ: ' + linkQuality + '%\n');
+    })
+    .on('eeprom_flash', () => {
+      
     })
     .on('show_date', (error, stdout, stderr) => {
       display.clear();
@@ -109,6 +96,30 @@ const State = (loadState) => {
     });
 
     return menu;
+  }
+
+
+  function showWiFi() {
+    let child, stdout, match;
+    child = SpawnSync('ip', ['addr', 'show', 'wlan0']);
+    stdout = child.stdout.toString();
+    match = /inet\s+([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/mg.exec(stdout);
+    let ipAddress = match ? match[1] : '???';
+
+    child = SpawnSync('iwconfig', ['wlan0']);
+    stdout = child.stdout.toString();
+    match = /ESSID:"([^"]*)"/mg.exec(stdout);
+    let essid = match ? match[1] : '???';
+    match = /Bit Rate=([0-9]+\s[^\s]+)/mg.exec(stdout);
+    let bitRate = match ? match[1] : '???';
+    match = /Link Quality=([0-9]+)\/([0-9]+)\s/mg.exec(stdout);
+    let linkQuality = match ? Math.floor(parseInt(match[1]) / parseInt(match[2]) * 100) : '???';
+
+    display.clear();
+    display.write('IP: ' + ipAddress + '\n');
+    display.write('SSID: ' + essid + '\n');
+    display.write('BR: ' + bitRate + '\n');
+    display.write('LQ: ' + linkQuality + '%\n');
   }
 
 
