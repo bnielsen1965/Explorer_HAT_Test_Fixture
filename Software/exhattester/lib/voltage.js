@@ -17,6 +17,13 @@ module.exports = function(settings) {
 
   // TODO not sure why doing this, it was part of openaps menu
   setVoltReadState('on')
+  .then(() => {
+    /*
+    setTimeout(() => {
+      setVoltReadState('off');
+    }, 500);
+    */
+  })
   .catch(err => { console.log(err.toString()); });
 
   // example, read single ended
@@ -27,16 +34,24 @@ module.exports = function(settings) {
         .then(() => {
           setTimeout(() => {
             settings.i2cBus.writeWordSync(addr, REGISTER_CONFIG, swapEndian(config | 0x8000));
-            sample(0);
+            readValue()
+            .then(v => {
+              resolve(v);
+              return setVoltReadState('off');
+            })
+            .catch(err => { reject(err); });
+//            sample(0);
           }, 1000);
         })
         .catch(err => { reject(err); });
       }
       catch (e) {
-        console.log('CATCH', e.toString())
+//        console.log('CATCH', e.toString())
         reject(new Error(e.toString()));
         return;
       }
+
+
 
       let sample = i => {
         readValue()
@@ -47,7 +62,7 @@ module.exports = function(settings) {
           }
           else {
             console.log('sample', v)
-            setTimeout(() => { sample(i + 1); }, 100);
+            setTimeout(() => { sample(i + 1); }, 300);
           }
         })
         .catch(function (e) { reject(e); });

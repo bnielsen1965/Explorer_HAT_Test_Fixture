@@ -5,20 +5,27 @@ const GPIOS = require('../lib/gpios');
 
 const State = (loadState, stayIdle) => {
   return new Promise((resolve, reject) => {
-    GPIOS.setGPIOState('power_on')
+    GPIOS.setGPIOState('idle')
     .then(() => {
+      // get HAT present state
       return GPIOS.getGPIOValue(GPIO_PINS.inputs.GPIO_HAT_PRESENT.gpio);
     })
     .then(hatPresent => {
-      // if HAT is attached then go to ready state
+      // if HAT is attached then transition state
       if (!stayIdle && parseInt(hatPresent) === GPIO_PINS.inputs.GPIO_HAT_PRESENT.on) {
-        loadState('ready')
+        loadState('hat_on')
         .then(newState => {
           resolve(newState);
         })
         .catch(err => { reject(err); });
       }
-      resolve({});
+      else {
+        // resolve with the idle state
+        resolve({
+          name: 'idle',
+          ready: true
+        });
+      }
     })
     .catch(err => { reject(err); });
   });

@@ -6,47 +6,27 @@ const GPIOS = require('../lib/gpios');
 const Path = require('path');
 const DisplayConfig = require('../config/display.json');
 const Display = require('../lib/display');
-const I2C = require('i2c-bus');
-
-const VoltageConfig = require('../config/voltage.json');
-const Voltage = require('../lib/voltage');
 
 const State = (loadState) => {
   let display;
-  let i2cBus;
-  let voltageInterval;
+
   return new Promise((resolve, reject) => {
-    try {
-      display = Display.openDisplay(DisplayConfig);
-      display.clear();
-      display.write('Charge Test\n- Charge current\n- Battery voltage\n- Charge LED');
-    }
-    catch(e) {
-      console.log('E', e.toString());
-    }
-
-    i2cBus = I2C.openSync(1);
-    VoltageConfig.i2cBus = i2cBus;
-    let voltage = Voltage(VoltageConfig);
-
-    voltageInterval = setInterval(() => {
-      voltage()
-      .then(function (v) {
-        console.log('V', v * 1000)
-        display.setCursor(0, 6 * 7);
-        display.write('Voltage ' + v + ' VDC');
-      })
-      .catch(function (e) { console.log(e.toString()); });
-    }, 3000);
-
-
-    GPIOS.setGPIOState('test_charge')
+    preTest()
+    .then(() => {
+      return startDisplay('Charge Test\n\nCharging LED on?');
+    })
+    .then(newDisplay => {
+      display = newDisplay;
+      return GPIOS.setGPIOState('test_charge');
+    })
     .then(() => {
       resolve({
+        name: 'test_charge',
+        ready: true,
         destroy: destroy,
 
         up_on_clicked: () => {
-          loadState('test_display')
+          loadState('test_batt')
           .catch(err => {
             console.log(err.toString());
           });
@@ -56,7 +36,7 @@ const State = (loadState) => {
         },
 
         down_on_clicked: () => {
-          loadState('test3')
+          loadState('test_35v')
           .catch(err => {
             console.log(err.toString());
           });
@@ -70,28 +50,47 @@ const State = (loadState) => {
     .catch(err => { reject(err); });
   });
 
-/*
-  function startVoltageInterval() {
-    // setup battery voltage monitor
-    var i2cBus = I2C.openSync(1);
-    var voltageConfig = require('../config/voltage.json')
-    voltageConfig.i2cBus = i2cBus
-    var voltage = require('../lib/voltage')(voltageConfig)
-    setInterval(readVoltage, 3000);
-    function readVoltage() {
-      voltage()
-      .then(function (v) {
-        console.log('V', v * 1000)
-        display.setCursor(0, 6 * 7);
-        display.write('Voltage ' + v + ' VDC');
+
+  function preTest() {
+    return new Promise((resolve, reject) => {
+      // need to preset test to make sure battery is detected
+      GPIOS.setGPIOOnOff('GPIO_BATT', 'on')
+      .then(() => {
+        return GPIOS.setGPIOOnOff('GPIO_HAT', 'off');
       })
-      .catch(function (e) { reject(e) });
-    }
+      .then(() => {
+        setTimeout(resolve, 1000);
+      })
+      .catch(err => { reject(err); });
+    });
   }
-*/
+
+
+  function startDisplay(title) {
+    return new Promise((resolve, reject) => {
+      try {
+        let dis = Display.openDisplay(DisplayConfig);
+        dis.clear();
+        dis.write(title || '');
+        resolve(dis);
+      }
+      catch(e) {
+        reject(new Error(e.toString()));
+      }
+    });
+  }
+
+
   function destroy() {
-    clearInterval(voltageInterval);
-    display.destroy();
+    return new Promise((resolve, reject) => {
+      // ensure battery does not continue to charge
+      GPIOS.setGPIOOnOff('GPIO_BATT', 'off')
+      .then(() => {
+        display.destroy();
+        resolve();
+      })
+      .catch(err => { reject(err); });
+    });
   }
 };
 

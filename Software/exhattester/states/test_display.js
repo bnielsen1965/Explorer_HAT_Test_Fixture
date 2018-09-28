@@ -12,6 +12,8 @@ const State = (loadState) => {
     display = openDisplay(DisplayConfig);
     drawImage(display, images[imageIndex]);
     resolve({
+      name: 'test_display',
+      ready: true,
       destroy: destroy,
 
       up_on_clicked: () => {
@@ -36,7 +38,7 @@ const State = (loadState) => {
           drawImage(display, images[imageIndex])
         }
         else {
-          loadState('test_charge')
+          loadState('ready')
           .catch(err => {
             console.log(err.toString());
           });
@@ -49,8 +51,12 @@ const State = (loadState) => {
     });
   });
 
+
   function destroy() {
-    display.destroy();
+    return new Promise((resolve, reject) => {
+      display.destroy();
+      resolve();
+    });
   }
 };
 

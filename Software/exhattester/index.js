@@ -17,21 +17,36 @@ myNPB
   console.log('RELEASED', gpio, JSON.stringify(data, null, 2));
 })
 .on('clicked', function (gpio, data) {
-  switch (parseInt(gpio)) {
-    case GPIO_PINS.buttons.GPIO_UP:
-    if (currentState.up_on_clicked) { currentState.up_on_clicked(); }
-    break;
+  console.log('CLICKED', gpio, currentState.name)
+  if (currentState.ready) {
+    switch (parseInt(gpio)) {
+      case GPIO_PINS.buttons.GPIO_UP:
+      if (currentState.up_on_clicked) { currentState.up_on_clicked(); }
+      break;
 
-    case GPIO_PINS.buttons.GPIO_DOWN:
-    if (currentState.down_on_clicked) { currentState.down_on_clicked(); }
-    break;
+      case GPIO_PINS.buttons.GPIO_DOWN:
+      if (currentState.down_on_clicked) { currentState.down_on_clicked(); }
+      break;
+    }
   }
 })
 .on('clicked_pressed', function (gpio, data) {
-  loadState('idle', true)
-  .catch(err => {
-    console.log(err.toString());
-  });
+  switch (parseInt(gpio)) {
+    case GPIO_PINS.buttons.GPIO_UP:
+    loadState('idle', true)
+    .catch(err => {
+      console.log(err.toString());
+    });
+    break;
+
+    case GPIO_PINS.buttons.GPIO_DOWN:
+    loadState('hat_on', true)
+    .catch(err => {
+      console.log(err.toString());
+    });
+    break;
+  }
+
 })
 .on('double_clicked', function (gpio, data) {
   switch (parseInt(gpio)) {
@@ -61,21 +76,37 @@ process.on('SIGINT', function() {
   process.exit();
 });
 
-//TODO need to destroy current state here because the state itself may not know it is being swapped out
+
 function loadState(state, arg) {
   return new Promise((resolve, reject) => {
     console.log('LOAD STATE', state);
-    if (currentState.destroy) {
-      currentState.destroy();
-    }
-    require(Path.join(process.cwd(), 'states', state))(loadState, arg)
+    destroy()
+    .then(() => {
+      currentState = null;
+      return require(Path.join(process.cwd(), 'states', state))(loadState, arg);
+    })
     .then(newState => {
       currentState = newState;
+      console.log('NEW STATE', currentState.name)
       resolve(newState);
     })
     .catch(err => {
-      console.log('Load state error.', state, err.toString());
+      console.log('Load state error.', state, err.toString(), err.stack);
     });
   });
+}
 
+function destroy() {
+  return new Promise((resolve, reject) => {
+    if (currentState && currentState.destroy) {
+      currentState.destroy()
+      .then(() => {
+        resolve();
+      })
+      .catch(err => { reject(err); });
+    }
+    else {
+      resolve();
+    }
+  });
 }

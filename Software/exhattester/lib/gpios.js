@@ -92,10 +92,7 @@ const GPIOS = {
         }
         let gpioName = gpioNames[i];
         if (GPIO_STATES[state][gpioName]) {
-          // set value to on or off based on the defined map of on = 0 | 1
-          let value = GPIOS.getOnOffValue(gpioName, GPIO_STATES[state][gpioName]);// === 'on' ? GPIO_PINS.outputs[gpioName].on : GPIO_PINS.outputs[gpioName].on^1&1;
-          console.log(gpioName, GPIO_STATES[state][gpioName]);
-          GPIOS.setGPIOValue(GPIO_PINS.outputs[gpioName].gpio, value)
+          GPIOS.setGPIOOnOff(gpioName, GPIO_STATES[state][gpioName])
           .then(() => {
             setGPIO(i + 1);
           })
@@ -115,9 +112,14 @@ const GPIOS = {
   },
 
 
+  setGPIOOnOff: (gpioName, onOff) => {
+    let value = GPIOS.getOnOffValue(gpioName, onOff);
+    return GPIOS.setGPIOValue(GPIO_PINS.outputs[gpioName].gpio, value)
+  },
+
+
 
   setGPIOValue: (gpio, value) => {
-    console.log('GSET', gpio, value)
     return new Promise((resolve, reject) => {
       FS.writeFile(Path.join(GPIO_PATH, 'gpio' + gpio, 'value'), value, err => {
         if (err) {

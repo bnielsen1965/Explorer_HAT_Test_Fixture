@@ -1,21 +1,23 @@
 [
   {
-    "label": "Test All",
-    "emit": "test_all"
+    "label": "Electrical Tests",
+    "emit": "test_electrical"
+  },
+  {
+    "label": "Display Tests",
+    "emit": "test_display"
   },
   {
     "label": "System",
     "menu": [
       {
-        "label": "Test",
-        "emit": {
-          "name": "text",
-          "arguments": ["Text test."]
-        }
+        "label": "WiFi",
+        "emit": "show_wifi"
       },
       {
         "label": "Date",
-        "command": "date"
+        "command": "date +'%F %T'",
+        "emit": "show_date"
       }
     ]
   },
