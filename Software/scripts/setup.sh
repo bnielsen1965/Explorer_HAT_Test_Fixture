@@ -57,7 +57,7 @@ cloneRepo() {
 
 
 runSetupScripts() {
-	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh" "eeprom-utils-install.sh")
+	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh" "eeprom-utils-install.sh" "ccprog-install.sh")
 	for script in "${scripts[@]}"; do
 	  cd "$REPO_DIR$REPO_SCRIPTS_PATH"
 		. "./$script"

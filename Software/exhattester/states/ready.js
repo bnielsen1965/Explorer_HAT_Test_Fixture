@@ -110,7 +110,7 @@ const State = (loadState) => {
     stdout = child.stdout.toString();
     match = /ESSID:"([^"]*)"/mg.exec(stdout);
     let essid = match ? match[1] : '???';
-    match = /Bit Rate=([0-9]+\s[^\s]+)/mg.exec(stdout);
+    match = /Bit Rate=([0-9.]+\s[^\s]+)/mg.exec(stdout);
     let bitRate = match ? match[1] : '???';
     match = /Link Quality=([0-9]+)\/([0-9]+)\s/mg.exec(stdout);
     let linkQuality = match ? Math.floor(parseInt(match[1]) / parseInt(match[2]) * 100) : '???';
