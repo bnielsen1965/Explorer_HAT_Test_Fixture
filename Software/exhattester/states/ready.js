@@ -79,10 +79,35 @@ const State = (loadState) => {
       showWiFi();
     })
     .on('eeprom_verify', () => {
+      display.clear();
+      display.write('Verifying...\n');
 
+      let child = SpawnSync('../scripts/eeprom-verify.sh');
+      if (child.status) {
+        display.write('Verification failed.\nTry flashing eeprom.');
+      }
+      else {
+        display.write('Verification success.');
+      }
     })
     .on('eeprom_flash', () => {
-      
+      display.clear();
+      display.write('Flashing in 10 sec.\nConnect jumper.\n');
+      setTimeout(function () {
+        display.write('Flashing...\n');
+        GPIOS.setGPIOOnOff('GPIO_PGM', 'on')
+        .then(() => {
+          let child = SpawnSync('../scripts/eeprom-flash.sh');
+          if (child.status) {
+            display.write('Flash failed.');
+          }
+          else {
+            display.write('Flash done.');
+          }
+          return GPIOS.setGPIOOnOff('GPIO_PGM', 'off');
+        })
+        .catch(err => { reject(err); });
+      }, 10000);
     })
     .on('show_date', (error, stdout, stderr) => {
       display.clear();
