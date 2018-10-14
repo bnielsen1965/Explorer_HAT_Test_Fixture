@@ -1,13 +1,5 @@
 [
   {
-    "label": "Reset",
-    "emit": "radio_reset"
-  },
-  {
-    "label": "Erase",
-    "emit": "radio_erase"
-  },
-  {
     "label": "BitBang Reset",
     "emit": "radio_bitbang_reset"
   },
@@ -18,5 +10,9 @@
   {
     "label": "BitBang Write",
     "emit": "radio_bitbang_write"
+  },
+  {
+    "label": "Radio Placeholder",
+    "emit": "radio_placeholder"
   }
 ]

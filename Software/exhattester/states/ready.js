@@ -90,10 +90,15 @@ const State = (loadState) => {
     })
     .on('radio_bitbang_reset', () => {
       radioBitbang(display, 'reset');
-    }).on('radio_bitbang_erase', () => {
+    })
+    .on('radio_bitbang_erase', () => {
       radioBitbang(display, 'erase');
-    }).on('radio_bitbang_write', () => {
+    })
+    .on('radio_bitbang_write', () => {
       radioBitbang(display, 'write');
+    })
+    .on('radio_placeholder', () => {
+      radioPlaceholder(display);
     })
     .on('show_date', (error, stdout, stderr) => {
       display.clear();
@@ -110,8 +115,17 @@ const State = (loadState) => {
   }
 
 
-  function radioReset() {
-
+  function radioPlaceholder() {
+    display.clear();
+    display.write('Run placeholder...\n');
+    let child = SpawnSync('../scripts/radio-placeholder.sh');
+    if (child.status) {
+      display.write('Command failed.');
+    }
+    else {
+      display.write('Command success.\n');
+      display.write(child.output.join('\n'));
+    }
   }
 
 

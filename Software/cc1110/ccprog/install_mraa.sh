@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get --assume-yes install cmake git build-essential swig3.0 python-dev nodejs-dev cmake libjson-c-dev
+sudo apt-get --assume-yes install cmake git build-essential swig python-dev python-setuptools nodejs-dev cmake libjson-c-dev
 cd /tmp
 git clone https://github.com/intel-iot-devkit/mraa
 cd mraa
@@ -10,4 +10,3 @@ cmake ..
 make
 sudo make install
 sudo ldconfig
-
