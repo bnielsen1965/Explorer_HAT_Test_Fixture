@@ -35,7 +35,9 @@ const State = (loadState) => {
           destroy: destroy,
 
           up_on_clicked: () => {
-            menu.menuUp();
+            if (!menu.menuUp()) {
+              showMenu(menu);
+            }
           },
 
           up_on_doubleclicked: () => {
@@ -43,7 +45,9 @@ const State = (loadState) => {
           },
 
           down_on_clicked: () => {
-            menu.menuDown();
+            if (!menu.menuDown()) {
+              showMenu(menu);
+            }
           },
 
           down_on_doubleclicked: () => {
@@ -79,35 +83,17 @@ const State = (loadState) => {
       showWiFi();
     })
     .on('eeprom_verify', () => {
-      display.clear();
-      display.write('Verifying...\n');
-
-      let child = SpawnSync('../scripts/eeprom-verify.sh');
-      if (child.status) {
-        display.write('Verification failed.\nTry flashing eeprom.');
-      }
-      else {
-        display.write('Verification success.');
-      }
+      eepromVerify(display);
     })
     .on('eeprom_flash', () => {
-      display.clear();
-      display.write('Flashing in 10 sec.\nConnect jumper.\n');
-      setTimeout(function () {
-        display.write('Flashing...\n');
-        GPIOS.setGPIOOnOff('GPIO_PGM', 'on')
-        .then(() => {
-          let child = SpawnSync('../scripts/eeprom-flash.sh');
-          if (child.status) {
-            display.write('Flash failed.');
-          }
-          else {
-            display.write('Flash done.');
-          }
-          return GPIOS.setGPIOOnOff('GPIO_PGM', 'off');
-        })
-        .catch(err => { reject(err); });
-      }, 10000);
+      eepromFlash(display);
+    })
+    .on('radio_bitbang_reset', () => {
+      radioBitbang(display, 'reset');
+    }).on('radio_bitbang_erase', () => {
+      radioBitbang(display, 'erase');
+    }).on('radio_bitbang_write', () => {
+      radioBitbang(display, 'write');
     })
     .on('show_date', (error, stdout, stderr) => {
       display.clear();
@@ -121,6 +107,62 @@ const State = (loadState) => {
     });
 
     return menu;
+  }
+
+
+  function radioReset() {
+
+  }
+
+
+  function radioBitbang(display, command) {
+    display.clear();
+    display.write('BitBang ' + command + '...\n');
+    setTimeout(() => {
+      let child = SpawnSync('../scripts/radio-bitbang.sh', [command]);
+      console.log(child.output)
+      if (child.status) {
+        display.write('Command failed.');
+      }
+      else {
+        display.write('Command success.');
+      }
+    }, 2000);
+  }
+
+
+  function eepromVerify(display) {
+    display.clear();
+    display.write('Verifying...\n');
+
+    let child = SpawnSync('../scripts/eeprom-verify.sh');
+    if (child.status) {
+      display.write('Verification failed.\nTry flashing eeprom.');
+    }
+    else {
+      display.write('Verification success.');
+    }
+  }
+
+
+  function eepromFlash(display) {
+    display.clear();
+    display.write('Flashing in 10 sec.\nConnect jumper.\n');
+    setTimeout(function () {
+      display.write('Flashing...\n');
+      GPIOS.setGPIOOnOff('GPIO_PGM', 'on')
+      .then(() => {
+        let child = SpawnSync('../scripts/eeprom-flash.sh');
+        if (child.status) {
+          display.write('Flash failed.');
+        }
+        else {
+          display.write('Flash done.');
+        }
+        return GPIOS.setGPIOOnOff('GPIO_PGM', 'off');
+      })
+      .catch(err => { reject(err); });
+    }, 10000);
   }
 
 

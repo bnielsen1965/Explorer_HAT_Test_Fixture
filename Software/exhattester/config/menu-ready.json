@@ -23,22 +23,10 @@
   },
   {
     "label": "EEPROM",
-    "menu": [
-      {
-        "label": "Verify",
-        "emit": "eeprom_verify"
-      },
-      {
-        "label": "Flash",
-        "emit": "eeprom_flash"
-      }
-    ]
+    "menuFile": "./config/menu_eeprom.json"
   },
   {
     "label": "Radio",
-    "emit": {
-      "name": "radio",
-      "arguments": ["radio", "radio"]
-    }
+    "menuFile": "./config/menu_radio.json"
   }
 ]

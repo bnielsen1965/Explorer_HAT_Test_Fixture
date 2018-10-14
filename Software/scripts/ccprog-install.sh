@@ -15,6 +15,9 @@ installccprog() {
 	infomessage "Make and install ccprog."
 	make
 	sudo make install
+
+	cd "$CURRENT_PATH"
+	infomessage "ccprog install complete"
 }
 
 
