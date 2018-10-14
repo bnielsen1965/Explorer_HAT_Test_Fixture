@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Reset",
+    "emit": "radio_reset"
+  },
+  {
+    "label": "Erase",
+    "emit": "radio_erase"
+  },
+  {
+    "label": "BitBang Reset",
+    "emit": "radio_bitbang_reset"
+  },
+  {
+    "label": "BitBang Erase",
+    "emit": "radio_bitbang_erase"
+  },
+  {
+    "label": "BitBang Write",
+    "emit": "radio_bitbang_write"
+  }
+]

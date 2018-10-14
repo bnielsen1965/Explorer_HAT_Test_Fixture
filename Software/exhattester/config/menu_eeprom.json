@@ -1,0 +1,10 @@
+[
+  {
+    "label": "Verify",
+    "emit": "eeprom_verify"
+  },
+  {
+    "label": "Flash",
+    "emit": "eeprom_flash"
+  }
+]
