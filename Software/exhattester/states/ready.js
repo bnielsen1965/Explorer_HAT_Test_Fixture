@@ -120,7 +120,6 @@ const State = (loadState) => {
     display.write('BitBang ' + command + '...\n');
     setTimeout(() => {
       let child = SpawnSync('../scripts/radio-bitbang.sh', [command]);
-      console.log(child.output)
       if (child.status) {
         display.write('Command failed.');
       }

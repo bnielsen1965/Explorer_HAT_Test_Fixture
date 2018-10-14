@@ -9,11 +9,6 @@ fi
 
 CMD="$1"
 
-#if ! [[ "$CMD" =~ ^(reset|erase|write)$ ]]; then
-#  echo "Unknown command $CMD"
-#  exit 1
-#fi
-
 
 unknowncommand() {
   echo "Unknown command $CMD"
