@@ -97,8 +97,17 @@ const State = (loadState) => {
     .on('radio_bitbang_write', () => {
       radioBitbang(display, 'write');
     })
-    .on('radio_placeholder', () => {
-      radioPlaceholder(display);
+    .on('radio_leds_on', () => {
+      radioCommand(display, 'leds_on', 'Radio LEDs on...');
+    })
+    .on('radio_leds_off', () => {
+      radioCommand(display, 'leds_off', 'Radio LEDs off...');
+    })
+    .on('radio_reboot', () => {
+      radioCommand(display, 'reboot', 'Radio reboot...');
+    })
+    .on('radio_version', () => {
+      radioCommand(display, 'version', 'Firmware version...');
     })
     .on('show_date', (error, stdout, stderr) => {
       display.clear();
@@ -115,17 +124,19 @@ const State = (loadState) => {
   }
 
 
-  function radioPlaceholder() {
+  function radioCommand(display, command, message) {
     display.clear();
-    display.write('Run placeholder...\n');
-    let child = SpawnSync('../scripts/radio-placeholder.sh');
-    if (child.status) {
-      display.write('Command failed.');
-    }
-    else {
-      display.write('Command success.\n');
-      display.write(child.output.join('\n'));
-    }
+    display.write(message + '\n');
+    setTimeout(function () {
+      let child = SpawnSync('../scripts/radio-commands.sh', [command]);
+      if (child.status) {
+        display.write('Command failed.');
+      }
+      else {
+        display.write('Command success.\n');
+        display.write(child.output.join('\n'));
+      }
+    }, 500);
   }
 
 

@@ -11,13 +11,13 @@ const npb = require('node-pi-buttons');
 let myNPB = npb();
 myNPB
 .on('pressed', function (gpio, data) {
-  console.log('PRESSED', gpio, JSON.stringify(data, null, 2));
+//  console.log('PRESSED', gpio, JSON.stringify(data, null, 2));
 })
 .on('released', function (gpio, data) {
-  console.log('RELEASED', gpio, JSON.stringify(data, null, 2));
+//  console.log('RELEASED', gpio, JSON.stringify(data, null, 2));
 })
 .on('clicked', function (gpio, data) {
-  console.log('CLICKED', gpio, currentState.name)
+//  console.log('CLICKED', gpio, currentState.name)
   if (currentState.ready) {
     switch (parseInt(gpio)) {
       case GPIO_PINS.buttons.GPIO_UP:

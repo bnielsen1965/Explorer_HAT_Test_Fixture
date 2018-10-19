@@ -12,7 +12,19 @@
     "emit": "radio_bitbang_write"
   },
   {
-    "label": "Radio Placeholder",
-    "emit": "radio_placeholder"
+    "label": "Reboot",
+    "emit": "radio_reboot"
+  },
+  {
+    "label": "Firmware Version",
+    "emit": "radio_version"
+  },
+  {
+    "label": "LEDs On",
+    "emit": "radio_leds_on"
+  },
+  {
+    "label": "LEDs Off",
+    "emit": "radio_leds_off"
   }
 ]
