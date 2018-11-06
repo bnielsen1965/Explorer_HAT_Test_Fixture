@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd ../cc1110/spitest
-sudo node index.js "$1"
+cd ../cc1110/rftest
+sudo node index.js "$1" "$2"
 exit $?

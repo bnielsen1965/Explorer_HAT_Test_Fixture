@@ -109,6 +109,9 @@ const State = (loadState) => {
     .on('radio_version', () => {
       radioCommand(display, 'version', 'Firmware version...');
     })
+    .on('radio_ping', () => {
+      radioCommand(display, ['ping', '"ping test"', 10], 'Ping test...');
+    })
     .on('show_date', (error, stdout, stderr) => {
       display.clear();
       if (error) {
@@ -125,10 +128,13 @@ const State = (loadState) => {
 
 
   function radioCommand(display, command, message) {
+    if (!Array.isArray(command)) {
+      command = [command];
+    }
     display.clear();
     display.write(message + '\n');
     setTimeout(function () {
-      let child = SpawnSync('../scripts/radio-commands.sh', [command]);
+      let child = SpawnSync('../scripts/radio-commands.sh', command);
       if (child.status) {
         display.write('Command failed.');
       }

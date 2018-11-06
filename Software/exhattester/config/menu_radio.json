@@ -26,5 +26,9 @@
   {
     "label": "LEDs Off",
     "emit": "radio_leds_off"
+  },
+  {
+    "label": "Ping",
+    "emit": "radio_ping"
   }
 ]
