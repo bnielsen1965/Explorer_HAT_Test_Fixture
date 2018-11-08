@@ -46,7 +46,7 @@ cloneRepo() {
 
 	cd "$INSTALL_DIR"
 #	cd "$REPO_TMP_DIR"
-	git clone "$REPO_URL"
+	sudo git clone "$REPO_URL"
 	if [ $? -ne 0 ]; then
 		errormessage "Error while cloning repo. $REPO_URL"
 		return 1
