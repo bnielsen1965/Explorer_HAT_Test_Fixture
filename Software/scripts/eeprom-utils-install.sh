@@ -15,7 +15,6 @@ installeepromutils() {
 
 	cd "$CURRENT_PATH"
 	infomessage "eepromutils install complete"
-	
 }
 
 

@@ -37,27 +37,30 @@ installGit() {
 
 cloneRepo() {
 	infomessage "clone"
-	REPO_TMP_DIR=$(mktemp -d)
-	if [ $? -ne 0 ]; then
-		errormessage "Failed to create tmp directory for clone."
-		return 1
-	fi
+	INSTALL_DIR="/opt"
+#	REPO_TMP_DIR=$(mktemp -d)
+#	if [ $? -ne 0 ]; then
+#		errormessage "Failed to create tmp directory for clone."
+#		return 1
+#	fi
 
-	cd "$REPO_TMP_DIR"
+	cd "$INSTALL_DIR"
+#	cd "$REPO_TMP_DIR"
 	git clone "$REPO_URL"
 	if [ $? -ne 0 ]; then
 		errormessage "Error while cloning repo. $REPO_URL"
 		return 1
 	fi
 
-	REPO_DIR="$REPO_TMP_DIR/$REPO_NAME"
+	REPO_DIR="$INSTALL_DIR/$REPO_NAME"
+#	REPO_DIR="$REPO_TMP_DIR/$REPO_NAME"
 
 	return 0
 }
 
 
 runSetupScripts() {
-	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh" "eeprom-utils-install.sh" "ccprog-install.sh")
+	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh" "eeprom-utils-install.sh" "ccprog-install.sh" "rftest-install.sh", "exhattester-install.sh")
 	for script in "${scripts[@]}"; do
 	  cd "$REPO_DIR$REPO_SCRIPTS_PATH"
 		. "./$script"

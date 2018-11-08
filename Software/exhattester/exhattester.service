@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 User=root
-WorkingDirectory=/home/pi/Explorer_HAT_Test_Fixture/Software/exhattester
-ExecStart=/home/pi/Explorer_HAT_Test_Fixture/Software/exhattester/start.sh
+WorkingDirectory=/opt/Explorer_HAT_Test_Fixture/Software/exhattester
+ExecStart=/opt/Explorer_HAT_Test_Fixture/Software/exhattester/start.sh
 Restart=always
 RestartSec=10
 SyslogIdentifier=exhattester
@@ -14,4 +14,3 @@ StandardError=syslog
 
 [Install]
 WantedBy=multi-user.target
-
