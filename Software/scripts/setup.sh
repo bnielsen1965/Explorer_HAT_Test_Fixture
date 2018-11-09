@@ -3,6 +3,8 @@
 REPO_NAME="Explorer_HAT_Test_Fixture"
 REPO_URL="https://github.com/bnielsen1965/$REPO_NAME.git"
 REPO_SCRIPTS_PATH="/Software/scripts"
+INSTALL_DIR="/opt"
+REPO_DIR="$INSTALL_DIR/$REPO_NAME"
 
 
 # display a green message
@@ -37,35 +39,34 @@ installGit() {
 
 cloneRepo() {
 	infomessage "clone"
-	INSTALL_DIR="/opt"
-#	REPO_TMP_DIR=$(mktemp -d)
-#	if [ $? -ne 0 ]; then
-#		errormessage "Failed to create tmp directory for clone."
-#		return 1
-#	fi
 
 	cd "$INSTALL_DIR"
-#	cd "$REPO_TMP_DIR"
 	sudo git clone "$REPO_URL"
 	if [ $? -ne 0 ]; then
 		errormessage "Error while cloning repo. $REPO_URL"
 		return 1
 	fi
 
-	REPO_DIR="$INSTALL_DIR/$REPO_NAME"
-#	REPO_DIR="$REPO_TMP_DIR/$REPO_NAME"
-
 	return 0
 }
 
 
 runSetupScripts() {
-	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh" "eeprom-utils-install.sh" "ccprog-install.sh" "rftest-install.sh", "exhattester-install.sh")
+	cd "$REPO_DIR"
+	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh" "eeprom-utils-install.sh" "ccprog-install.sh" "rftest-install.sh" "exhattester-install.sh")
 	for script in "${scripts[@]}"; do
 	  cd "$REPO_DIR$REPO_SCRIPTS_PATH"
 		. "./$script"
 	done
 }
+
+
+# check if requested to only run setup scrxipts
+if [[ "$1" == "runscripts" ]]; then
+	infomessage "Running setup scripts only..."
+	runSetupScripts
+	exit 0
+fi
 
 
 # make sure we have git

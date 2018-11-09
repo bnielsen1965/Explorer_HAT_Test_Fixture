@@ -12,7 +12,7 @@ installexhattester() {
   sudo npm install
 
 	infomessage "Configure as service..."
-	sudo ln -s "$EXHATTESTER_DIR/Software/exhattester/exhattester.service" /etc/systemd/system/
+	sudo ln -s "$EXHATTESTER_DIR/exhattester.service" /etc/systemd/system/
 	sudo systemctl daemon-reload
 	sudo systemctl enable exhattester.service
 	sudo systemctl start exhattester.service
