@@ -3,9 +3,8 @@
 REPO_NAME="Explorer_HAT_Test_Fixture"
 REPO_URL="https://github.com/bnielsen1965/$REPO_NAME.git"
 REPO_SCRIPTS_PATH="/Software/scripts"
+INSTALL_TMP_DIR=$(mktemp -d)
 INSTALL_DIR="/opt"
-REPO_DIR="$INSTALL_DIR/$REPO_NAME"
-
 
 # display a green message
 infomessage() {
@@ -38,9 +37,9 @@ installGit() {
 
 
 cloneRepo() {
-	infomessage "clone"
+	infomessage "Clone repo"
 
-	cd "$INSTALL_DIR"
+	cd "$INSTALL_TMP_DIR"
 	sudo git clone "$REPO_URL"
 	if [ $? -ne 0 ]; then
 		errormessage "Error while cloning repo. $REPO_URL"
@@ -52,12 +51,15 @@ cloneRepo() {
 
 
 runSetupScripts() {
-	cd "$REPO_DIR"
 	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh" "eeprom-utils-install.sh" "ccprog-install.sh" "rftest-install.sh" "exhattester-install.sh")
 	for script in "${scripts[@]}"; do
-	  cd "$REPO_DIR$REPO_SCRIPTS_PATH"
+	  cd "$INSTALL_TMP_DIR/$REPO_NAME$REPO_SCRIPTS_PATH"
 		. "./$script"
 	done
+
+	infomessage "Copy $REPO_NAME to $INSTALL_DIR"
+	cd "$INSTALL_TMP_DIR"
+	sudo rsync -av "$REPO_NAME" "$INSTALL_DIR/"
 }
 
 

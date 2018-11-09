@@ -3,7 +3,7 @@
 . ./functions.sh
 
 
-NODEJS_DLPATH="https://nodejs.org/dist/latest-v8.x/"
+# paths assume present working directory is scriptsNODEJS_DLPATH="https://nodejs.org/dist/latest-v8.x/"
 NODEJS_TAR_EXT=".tar.xz"
 ARCH=$(uname -m)
 NODEJS_DLPATTERN="node-[^>]*-linux-$ARCH$NODEJS_TAR_EXT"
@@ -13,7 +13,6 @@ NODEJS_INSTALL_PATH="/opt/nodejs"
 
 # get nodejs tarball and install
 installnodejs() {
-  CURRENT_PATH=$(pwd)
 	infomessage "Download nodejs"
 	NODEJS_FILE=$(wget -O - "$NODEJS_DLPATH" | grep -o $NODEJS_DLPATTERN | head -1)
 	if [ $? -ne 0 ]; then
@@ -44,8 +43,6 @@ installnodejs() {
 
 	infomessage "Clean up."
 	rm -rf "$NODEJS_TMP_DIR"
-
-	cd "$CURRENT_PATH"
 }
 
 

@@ -3,6 +3,7 @@
 . ./functions.sh
 
 
+# paths assume present working directory is scripts
 PIBUTTONS_REPO="https://github.com/bnielsen1965/pi-buttons"
 PIBUTTONS_VERSION="v1.0.1"
 

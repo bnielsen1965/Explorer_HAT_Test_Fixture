@@ -2,7 +2,7 @@
 
 . ./functions.sh
 
-
+# paths assume present working directory is scripts
 BOOT_CONFIG="/boot/config.txt"
 OVERLAY_SOURCE="../overlay/exhattf.dtbo"
 OVERLAY_DEST="/boot/overlays/exhattf.dtbo"

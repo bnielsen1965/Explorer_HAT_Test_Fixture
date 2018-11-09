@@ -2,11 +2,12 @@
 
 . ./functions.sh
 
+
+# paths assume present working directory is scripts
 EXHATTESTER_DIR=$(readlink -f "../exhattester")
 
 installexhattester() {
 	infomessage "Install exhattester..."
-	CURRENT_PATH=$(pwd)
 	cd "$EXHATTESTER_DIR"
 
   sudo npm install
@@ -18,7 +19,6 @@ installexhattester() {
 	sudo systemctl enable exhattester.service
 	sudo systemctl start exhattester.service
 
-	CURRENT_PATH=$(pwd)
 	infomessage "exhattester install complete"
 }
 

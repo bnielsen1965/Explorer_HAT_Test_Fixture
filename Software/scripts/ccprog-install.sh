@@ -2,11 +2,12 @@
 
 . ./functions.sh
 
+
+# paths assume present working directory is scripts
 CCPROG_DIR="../cc1110/ccprog"
 
 installccprog() {
 	infomessage "Install ccprog..."
-	CURRENT_PATH=$(pwd)
 	cd "$CCPROG_DIR"
 
 	infomessage "Make and install libmraa."
@@ -16,7 +17,6 @@ installccprog() {
 	make
 	sudo make install
 
-	cd "$CURRENT_PATH"
 	infomessage "ccprog install complete"
 }
 
