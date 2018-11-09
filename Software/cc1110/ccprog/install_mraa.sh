@@ -6,7 +6,11 @@ git clone https://github.com/intel-iot-devkit/mraa
 cd mraa
 mkdir build
 cd build
-cmake ..
+
+# cmake ..
+echo "WARNING: Building mraa without swig node due to swig 3.0 not supporting node 8+"
+
+cmake -DBUILDSWIGNODE=OFF ..
 make
 sudo make install
 sudo ldconfig
