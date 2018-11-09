@@ -14,3 +14,5 @@ cmake -DBUILDSWIGNODE=OFF ..
 make
 sudo make install
 sudo ldconfig
+
+sudo rm -rf /tmp/mraa
