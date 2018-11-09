@@ -9,7 +9,7 @@ installrftest() {
 	CURRENT_PATH=$(pwd)
 	cd "$RFTEST_DIR"
 
-  sudo npm install
+  sudo su -c "npm install"
 
   # install system wide script?
 
