@@ -3,7 +3,8 @@
 . ./functions.sh
 
 
-# paths assume present working directory is scriptsNODEJS_DLPATH="https://nodejs.org/dist/latest-v8.x/"
+# paths assume present working directory is scripts
+NODEJS_DLPATH="https://nodejs.org/dist/latest-v8.x/"
 NODEJS_TAR_EXT=".tar.xz"
 ARCH=$(uname -m)
 NODEJS_DLPATTERN="node-[^>]*-linux-$ARCH$NODEJS_TAR_EXT"
