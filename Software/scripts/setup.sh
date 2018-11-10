@@ -40,7 +40,7 @@ cloneRepo() {
 	infomessage "Clone repo"
 
 	cd "$INSTALL_TMP_DIR"
-	sudo git clone "$REPO_URL"
+	git clone "$REPO_URL"
 	if [ $? -ne 0 ]; then
 		errormessage "Error while cloning repo. $REPO_URL"
 		return 1

@@ -10,7 +10,7 @@ installexhattester() {
 	infomessage "Install exhattester..."
 	cd "$EXHATTESTER_DIR"
 
-  sudo npm install
+  npm install
 
 	infomessage "Configure as service..."
 	sudo rm /etc/systemd/system/exhattester.service
