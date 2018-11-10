@@ -1,5 +1,6 @@
 #!/bin/bash
 
 cd ../cc1110/rftest
-sudo node index.js "$1" "$2"
+shift 1
+sudo node index.js "$@"
 exit $?
