@@ -1,0 +1,16 @@
+[Unit]
+Description=Explorer HAT Tester Echo Server.
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/opt/Explorer_HAT_Test_Fixture/Software/echo_server
+ExecStart=/opt/Explorer_HAT_Test_Fixture/Software/echo_server/start.sh
+Restart=always
+RestartSec=10
+SyslogIdentifier=echo_server
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

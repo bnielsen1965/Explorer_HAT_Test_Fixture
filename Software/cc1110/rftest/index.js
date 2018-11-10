@@ -172,6 +172,10 @@ async function echo(channel, receiveTimeout, resendCount, resendDelay, forMS) {
   let runMS = 0;
   do {
     let packets = await radio.getPackets(channel, receiveTimeout);
+    if (packets.length) {
+      let pTime = new Date().toISOString().split('T')[1];
+      console.log(pTime, packets.length);
+    }
     for (let pi = 0; pi < packets.length; pi++) {
       await radio.sendPacket(channel, packets[pi], resendCount, resendDelay);
     }

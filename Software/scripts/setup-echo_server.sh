@@ -61,12 +61,12 @@ runSetupScripts() {
 	cd "$INSTALL_TMP_DIR"
 	sudo rsync -av "$REPO_NAME" "$INSTALL_DIR/"
 
-	infomessage "Configure exhattester as service..."
-	sudo rm /etc/systemd/system/exhattester.service
-	sudo ln -s "$INSTALL_DIR/$REPO_NAME/Software/exhattester/exhattester.service" /etc/systemd/system/
+	infomessage "Configure echo_server as service..."
+	sudo rm /etc/systemd/system/echo_server.service
+	sudo ln -s "$INSTALL_DIR/$REPO_NAME/Software/echo_server/echo_server.service" /etc/systemd/system/
 	sudo systemctl daemon-reload
-	sudo systemctl enable exhattester.service
-	sudo systemctl start exhattester.service
+	sudo systemctl enable echo_server.service
+	sudo systemctl start echo_server.service
 
 }
 
