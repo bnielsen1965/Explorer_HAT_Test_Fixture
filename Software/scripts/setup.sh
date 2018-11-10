@@ -51,6 +51,7 @@ cloneRepo() {
 
 
 runSetupScripts() {
+	# exhattester-install.sh must be last to ensure everything is setup before the copy to final destination
 	declare -a scripts=("overlay-install.sh" "nodejs-install.sh" "pi-buttons-install.sh" "eeprom-utils-install.sh" "ccprog-install.sh" "rftest-install.sh" "exhattester-install.sh")
 	for script in "${scripts[@]}"; do
 	  cd "$INSTALL_TMP_DIR/$REPO_NAME$REPO_SCRIPTS_PATH"
@@ -60,6 +61,14 @@ runSetupScripts() {
 	infomessage "Copy $REPO_NAME to $INSTALL_DIR"
 	cd "$INSTALL_TMP_DIR"
 	sudo rsync -av "$REPO_NAME" "$INSTALL_DIR/"
+
+	infomessage "Configure exhattester as service..."
+	sudo rm /etc/systemd/system/exhattester.service
+	sudo ln -s "$INSTALL_DIR/$REPO_NAME/Software/exhattester/exhattester.service" /etc/systemd/system/
+	sudo systemctl daemon-reload
+	sudo systemctl enable exhattester.service
+	sudo systemctl start exhattester.service
+
 }
 
 
