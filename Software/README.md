@@ -130,7 +130,7 @@ the commands to update and upgrade the OS packages, then reboot.
 > sudo reboot
 
 
-## Run setup.sh
+## Explorer HAT Test Application Setup
 
 The setup.sh script will install and configure the software to support the
 Explorer HAT Test Fixture. Use the terminal to download and execute the script file.
@@ -145,6 +145,32 @@ Explorer HAT Test Fixture. Use the terminal to download and execute the script f
 ### Execute setup.sh
 
 > ./setup.sh
+
+### Reboot
+
+After the setup process has successfully completed the Raspberry Pi needs a reboot
+before all the new settings and services will function properly, I.E. the new boot
+overlay that configures the GPIO pins is not applied until a reboot.
+
+> sudo reboot
+
+
+## Echo Server Setup
+
+The setup-echo_server.sh script will install and configure the radio echo server
+on a secondary Explorer HAT setup to enable the radio ping testing on a HAT that
+is under test.
+
+### Download and prepare setup-echo_server.sh
+
+> curl -LOk https://github.com/bnielsen1965/Explorer_HAT_Test_Fixture/raw/master/Software/scripts/setup-echo_server.sh
+
+> chmod a+x setup-echo_server.sh
+
+
+### Execute setup-echo_server.sh
+
+> ./setup-echo_server.sh
 
 ### Reboot
 
