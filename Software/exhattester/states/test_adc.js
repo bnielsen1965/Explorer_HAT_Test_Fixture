@@ -61,7 +61,7 @@ const State = (loadState) => {
       // ensure power is on
       GPIOS.setGPIOOnOff('GPIO_PWR', 'on')
       .then(() => {
-        return startDisplay('Test ADC\n\nLoad Fixture off.\n\n' + ADC_SECONDS + ' second intervals.');
+        return startDisplay('Test ADC\n\n' + ADC_SECONDS + ' second intervals.');
       })
       .then(newDisplay => {
         display = newDisplay;

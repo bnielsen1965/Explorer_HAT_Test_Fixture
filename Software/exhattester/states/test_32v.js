@@ -52,7 +52,7 @@ const State = (loadState) => {
       // ensure power is on
       GPIOS.setGPIOOnOff('GPIO_PWR', 'on')
       .then(() => {
-        return startDisplay('3.2 Volt Test\n\nLoad Fixture On\n\nLow Battery LED off?');
+        return startDisplay('3.2 Volt Test\n\nPress Load Fixture\nred button 5 sec\n\nLow Battery LED off?');
       })
       .then(newDisplay => {
         display = newDisplay;
